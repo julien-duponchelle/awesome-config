@@ -4,11 +4,16 @@ require("awful.autofocus")
 require("awful.rules")
 -- Theme handling library
 require("beautiful")
+
+
 -- Notification library
 require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
+
+-- Doc about keybinding
+local keydoc = require("keydoc")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -37,7 +42,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
@@ -54,18 +59,18 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
+--    awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+--    awful.layout.suit.tile.top
+--    awful.layout.suit.fair,
+--    awful.layout.suit.fair.horizontal,
+--    awful.layout.suit.spiral,
+--    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+--    awful.layout.suit.magnifier,
+--    awful.layout.suit.floating,
 }
 -- }}}
 
@@ -197,21 +202,23 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    awful.key({ "Ctrl",  "Mod1",         }, "Left",   awful.tag.viewprev       ),
-    awful.key({ "Ctrl",   "Mod1",      }, "Right",  awful.tag.viewnext       ),
+    keydoc.group("View"),
+    awful.key({ "Ctrl",  "Mod1",         }, "Left",   awful.tag.viewprev,       "Next View"),
+    awful.key({ "Ctrl",   "Mod1",      }, "Right",  awful.tag.viewnext,       "Previous View"),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
+    keydoc.group("Window"),
     awful.key({ modkey,           }, "Up",
         function ()
             awful.client.focus.byidx( 1)
             if client.focus then client.focus:raise() end
-        end),
+        end, "Next"),
     awful.key({ modkey,           }, "Down",
         function ()
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end, "Previous"),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.byidx(  1)    end),
@@ -273,8 +280,10 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+    awful.key({ modkey, }, "F1", keydoc.display)
 )
+
 
 -- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
