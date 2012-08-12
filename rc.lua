@@ -207,6 +207,7 @@ globalkeys = awful.util.table.join(
     awful.key({ "Ctrl",   "Mod1",      }, "Right",  awful.tag.viewnext,       "Previous View"),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
+    -- Window
     keydoc.group("Window"),
     awful.key({ modkey,           }, "Up",
         function ()
@@ -217,12 +218,18 @@ globalkeys = awful.util.table.join(
         function ()
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
-        end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end, "Previous"),
+        end, "Previous"),
+    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    awful.key({ modkey,           }, "m",
+        function (c)
+            c.maximized_horizontal = not c.maximized_horizontal
+            c.maximized_vertical   = not c.maximized_vertical
+        end, "Maximize"),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.byidx(  1)    end),
-    awful.key({ modkey, "Shift"   }, "Down", function () awful.client.swap.byidx( -1)    end),
+    keydoc.group("Layout"),
+    awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.byidx(  1)    end, "Swap =&gt;"),
+    awful.key({ modkey, "Shift"   }, "Down", function () awful.client.swap.byidx( -1)    end, "Swap &lt;="),
     awful.key({ modkey,  }, "Left", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey  }, "Right", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
@@ -275,11 +282,6 @@ clientkeys = awful.util.table.join(
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
-        end),
-    awful.key({ modkey,           }, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c.maximized_vertical   = not c.maximized_vertical
         end),
     awful.key({ modkey, }, "F1", keydoc.display)
 )
