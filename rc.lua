@@ -224,8 +224,8 @@ globalkeys = awful.util.table.join(
 
     -- Layout manipulation
     keydoc.group("Layout"),
-    awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.byidx(  1)    end, "Swap =&gt;"),
-    awful.key({ modkey, "Shift"   }, "Down", function () awful.client.swap.byidx( -1)    end, "Swap &lt;="),
+    awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.byidx(  1)    end, "Swap right"),
+    awful.key({ modkey, "Shift"   }, "Down", function () awful.client.swap.byidx( -1)    end, "Swap left"),
     awful.key({ modkey,  }, "Left", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey  }, "Right", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
@@ -238,23 +238,23 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, "Increase height"),
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end, "Decrease height"),
+    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end, "Add line"),
+    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end, "Remove line"),
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end, "Add column"),
+    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end, "Remove column"),
+    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end, "Next layout"),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end, "Previous layout"),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    keydoc.group("Run"),
+    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end, "Launch terminal"),
+    awful.key({ modkey, "Control" }, "r", awesome.restart, "Restart awesome"),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end, "Run"),
 
     awful.key({ modkey }, "x",
               function ()
@@ -266,6 +266,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
+    keydoc.group("Client keys"),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
@@ -284,7 +285,7 @@ clientkeys = awful.util.table.join(
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
         end),
-    awful.key({ modkey, }, "F1", keydoc.display)
+    awful.key({ modkey, }, "F1", keydoc.display, "Help")
 )
 
 
@@ -353,8 +354,8 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Chromium to always map on tags number 1 of screen 2.
-     { rule = { class = "Chromium" },
-       properties = { tag = tags[2][1] } },
+    -- { rule = { class = "Chromium" },
+    --   properties = { tag = tags[2][1] } },
 }
 -- }}}
 
